@@ -24,7 +24,7 @@ with DAG('user_processing',
                 lastname TEXT NOT NULL,
                 country TEXT NOT NULL,
                 username TEXT NOT NULL,
-                password TEXT NOT NULL
+                password TEXT NOT NULL,
                 email TEXT NOT NULL PRIMARY KEY
                 );
              '''
