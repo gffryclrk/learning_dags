@@ -1,6 +1,6 @@
 # From Marc Lambertis' Airflow course on Udemy
 
-import airflow.models import DAG
+from airflow.models import DAG
 from airflow.providers.sqlite.operators.sqlite import SqliteOperator
 
 from datetime import datetime
