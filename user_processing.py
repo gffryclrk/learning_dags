@@ -9,7 +9,7 @@ default_args = {
     'start_date': datetime(2021,1,1)
 }
 
-with DAG('user_processing_2', 
+with DAG('user_processing', 
         schedule_interval='@daily',
         default_args=default_args,
         catchup=False) as dag:
