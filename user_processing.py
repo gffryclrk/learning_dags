@@ -3,7 +3,7 @@
 from airflow.models import DAG
 from airflow.providers.sqlite.operators.sqlite import SqliteOperator
 from airflow.providers.http.sensors.http import HttpSensor
-from airflow.providers.bash_operator import BashOperator
+from airflow.operators.bash_operator import BashOperator
 
 from datetime import datetime
 
