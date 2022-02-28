@@ -2,6 +2,8 @@
 
 from airflow.models import DAG
 from airflow.providers.sqlite.operators.sqlite import SqliteOperator
+from airflow.providers.http.sensors.http import HttpSensor
+from airflow.providers.bash_operator import BashOperator
 
 from datetime import datetime
 
@@ -14,6 +16,11 @@ with DAG('user_processing',
         default_args=default_args,
         catchup=False) as dag:
     # Define tasks/operators
+
+    bash_task = BashOperator(
+        task_id='worker_sleep',
+        bash_command='sleep 120'
+    )
     
     creating_table = SqliteOperator(
         task_id='creating_table',
@@ -27,5 +34,16 @@ with DAG('user_processing',
                 password TEXT NOT NULL,
                 email TEXT NOT NULL PRIMARY KEY
                 );
-             '''
-     )
+            '''
+    )
+
+    # airflow connections add 'user_api' --conn-type 'http' --https://randomuser.me/api/ 
+#   is_api_available = HttpSensor(
+#       task_id='is_api_available',
+#       http_conn_id='user_api',
+#       endpoint='api/'
+#   )
+    
+    bash_task >> creating_table
+
+
