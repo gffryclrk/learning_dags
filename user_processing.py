@@ -17,10 +17,10 @@ with DAG('user_processing',
         catchup=False) as dag:
     # Define tasks/operators
 
-    bash_task = BashOperator(
-        task_id='worker_sleep',
-        bash_command='sleep 120'
-    )
+#   bash_task = BashOperator(
+#       task_id='worker_sleep',
+#       bash_command='sleep 120'
+#   )
     
     creating_table = SqliteOperator(
         task_id='creating_table',
@@ -37,13 +37,13 @@ with DAG('user_processing',
             '''
     )
 
-    # airflow connections add 'user_api' --conn-type 'http' --https://randomuser.me/api/ 
-#   is_api_available = HttpSensor(
-#       task_id='is_api_available',
-#       http_conn_id='user_api',
-#       endpoint='api/'
-#   )
+    # airflow connections add 'user_api' --conn-type 'http' --host https://randomuser.me/api/ 
+    is_api_available = HttpSensor(
+        task_id='is_api_available',
+        http_conn_id='user_api',
+        endpoint='api/'
+    )
     
-    bash_task >> creating_table
+#   bash_task >> creating_table
 
 
