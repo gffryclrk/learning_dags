@@ -4,7 +4,7 @@ from airflow.models import DAG
 from airflow.providers.sqlite.operators.sqlite import SqliteOperator
 from airflow.providers.http.sensors.http import HttpSensor
 from airflow.providers.http.operators.http import SimpleHttpOperator
-#from airflow.operators.bash_operator import BashOperator
+from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from pandas import json_normalize
 
@@ -28,7 +28,7 @@ def _processing_user(ti):
         'password': user['login']['password'],
         'email': user['email']
     })
-    processed_user.to_csv('/tmp/processed_user.csv', index=None, header=False)
+    processed_user.to_csv('/opt/airflow/data/tmp/processed_user.csv', index=None, header=False)
 
 
 
@@ -80,3 +80,7 @@ with DAG('user_processing',
         python_callable=_processing_user
     )
 
+    storing_user = BashOperator(
+        task_id='storing_user',
+        bash_command='echo -e ".separator ","\n.import /opt/airflow/data/tmp/processed_user.csv users" | sqlite3 /opt/airflow/data/test.db'
+    )
