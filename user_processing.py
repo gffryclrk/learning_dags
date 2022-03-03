@@ -75,6 +75,12 @@ with DAG('user_processing',
         log_response=True
     )
 
+    check_temp_data_dir = BashOperator(
+        task_id='check_temp_data_dir',
+        bash_command='[[ -d /opt/airflow/data/tmp ]] || mkdir /opt/airflow/data/tmp'
+    )
+
+
     processing_user = PythonOperator(
         task_id='processing_user',
         python_callable=_processing_user
