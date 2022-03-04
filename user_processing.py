@@ -12,7 +12,7 @@ from datetime import datetime
 import json
 
 default_args = {
-    'start_date': datetime(2021,1,1)
+    'start_date': datetime(2022,1,1)
 }
 
 def _processing_user(ti):
@@ -36,7 +36,7 @@ def _processing_user(ti):
 with DAG('user_processing', 
         schedule_interval='@daily',
         default_args=default_args,
-        catchup=False) as dag:
+        catchup=True) as dag:
     # Define tasks/operators
 
 #   bash_task = BashOperator(
