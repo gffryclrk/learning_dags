@@ -23,10 +23,20 @@ with DAG(
             bash_command = 'sleep 3'
         )
 
-        task_3 = BashOperator(
-            task_id = 'task_3',
-            bash_command = 'sleep 3'
-        )
+        with TaskGroup('flink_tasks') as flink_tasks:
+
+            task_3 = BashOperator(
+                task_id = 'task_3',
+                bash_command = 'sleep 3'
+            )
+
+
+        with TaskGroup('spark_tasks') as spark_tasks:
+
+            task_3 = BashOperator(
+                task_id = 'task_3',
+                bash_command = 'sleep 3'
+            )
 
     task_1 = BashOperator(
         task_id = 'task_1',
