@@ -11,10 +11,10 @@ default_args = {
     'start_date': datetime(2020, 1, 1)
 }
 
-def _training_model():
+def _training_model(ti):
     accuracy = uniform(0.1, 10.0)
     print(f'model\'s accuracy: {accuracy}')
-    return accuracy
+    ti.xcom_push(key='model_accuracy', value=accuracy)
 
 def _choose_best_model():
     print('choose best model')
