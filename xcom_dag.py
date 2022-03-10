@@ -14,6 +14,7 @@ default_args = {
 def _training_model():
     accuracy = uniform(0.1, 10.0)
     print(f'model\'s accuracy: {accuracy}')
+    return accuracy
 
 def _choose_best_model():
     print('choose best model')
