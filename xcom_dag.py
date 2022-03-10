@@ -24,12 +24,10 @@ def _choose_best_model(ti):
         'processing_tasks.training_model_b',
         'processing_tasks.training_model_c'
     ])
-    print(accuracies)
-
-def _is_accurate():
-    return('accurate')
-
-
+    for accuracy in accuracies:
+        if accuracy > 5:
+            return 'accurate'
+    return 'inaccurate'
 
 with DAG('xcom_dag', schedule_interval='@daily', default_args=default_args, catchup=False) as dag:
 
@@ -54,14 +52,9 @@ with DAG('xcom_dag', schedule_interval='@daily', default_args=default_args, catc
             python_callable=_training_model
         )
 
-    choose_model = PythonOperator(
+    choose_model = BranchPythonOperator(
         task_id='task_4',
         python_callable=_choose_best_model
-    )
-
-    is_accurate = BranchPythonOperator(
-        task_id='is_accurate',
-        python_callable=_is_accurate
     )
 
     accurate = DummyOperator(
@@ -73,4 +66,4 @@ with DAG('xcom_dag', schedule_interval='@daily', default_args=default_args, catc
     )
 
     downloading_data >> processing_tasks >> choose_model
-    choose_model >> is_accurate >> [accurate, inaccurate]
+    choose_model >> [accurate, inaccurate]
