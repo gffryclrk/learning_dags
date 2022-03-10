@@ -16,8 +16,14 @@ def _training_model(ti):
     print(f'model\'s accuracy: {accuracy}')
     ti.xcom_push(key='model_accuracy', value=accuracy)
 
-def _choose_best_model():
+def _choose_best_model(ti):
     print('choose best model')
+    accuracies = ti.xcom_pull(key='model_accuracy', task_ids=[
+        'processing_tasks.training_model_a',
+        'processing_tasks.training_model_b',
+        'processing_tasks.training_model_c'
+    ])
+    print(accuracies)
 
 with DAG('xcom_dag', schedule_interval='@daily', default_args=default_args, catchup=False) as dag:
 
