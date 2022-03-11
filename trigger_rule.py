@@ -31,5 +31,13 @@ with DAG('trigger_rule',
         trigger_rule='all_done'
     )
 
+    task_4 = BashOperator(
+        task_id = 'task_4',
+        bash_command='exit 0',
+        do_xcom_push = False,
+        trigger_rule='one_failed'
+    )
+
     [task_1, task_2] >> task_3
+    [task_1, task_2] >> task_4
 
