@@ -53,7 +53,7 @@ with DAG('xcom_dag', schedule_interval='@daily', default_args=default_args, catc
         )
 
     choose_model = BranchPythonOperator(
-        task_id='task_4',
+        task_id='choose_model',
         python_callable=_choose_best_model
     )
 
