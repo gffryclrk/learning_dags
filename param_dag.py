@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.models import Variable
+from textwrap import dedent
 
 from datetime import datetime
 
@@ -15,7 +16,11 @@ with DAG('param_dag',
         default_args=default_args,
         params=config,
         catchup=False) as dag:
-    
+
+    template = dedent('{{ params }}')
+
+    conf = template if len(template) > 0 else Variable.get('param_dag_config', deserialize_json=True)
+
     task_1 = BashOperator(
         task_id = 'task_1',
         bash_command='exit 1',
@@ -30,7 +35,7 @@ with DAG('param_dag',
 
     task_3 = BashOperator(
         task_id = 'task_3',
-        bash_command='echo {{ params.name }}; exit 0',
+        bash_command=f'echo {conf}; exit 0',
         do_xcom_push = False,
         trigger_rule='all_done'
     )
